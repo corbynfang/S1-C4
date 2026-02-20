@@ -1,0 +1,3 @@
+.DS_Store
+Backend/src/main/resources/datasets/*.csv
+Backend/src/main/resources/sql/schema.sql

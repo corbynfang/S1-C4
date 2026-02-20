@@ -1,0 +1,22 @@
+# Run: docker compose up -d
+# Stop: docker compose down
+# Database is ready when the container is running. Schema runs automatically on first start.
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: s1c4-postgres
+    environment:
+      POSTGRES_DB: s1c4database
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      # Auto-run schema on first startup
+      - ./Backend/src/main/resources/sql/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d s1c4database"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
