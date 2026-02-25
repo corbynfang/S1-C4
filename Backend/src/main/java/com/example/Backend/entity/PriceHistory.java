@@ -8,6 +8,7 @@ import java.time.LocalDate;
 // Maps to the price_history table in the database.
 // Uses JPA annotations to map the class to the table.
 // Uses Lombok to generate getters and setters.
+// C++ is very similar to Java, so this should be easy to understand.
 
 @Entity
 @Table(name = "price_history")

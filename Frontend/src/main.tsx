@@ -9,7 +9,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   </React.StrictMode>,
 )
 
-// Use contextBridge
-window.ipcRenderer.on('main-process-message', (_event, message) => {
+// Optional chaining prevents crash if ipcRenderer is undefined (e.g. browser preview)
+window.ipcRenderer?.on('main-process-message', (_event, message) => {
   console.log(message)
 })

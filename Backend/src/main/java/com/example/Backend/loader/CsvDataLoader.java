@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 // Runs once when the app starts. Only active when app.load-csv=true in application.properties.
 // Delegates to CsvPriceRowService to load all datasets/*.csv into the database.
+
 @Component
 @ConditionalOnProperty(name = "app.load-csv", havingValue = "true")
 public class CsvDataLoader implements CommandLineRunner {

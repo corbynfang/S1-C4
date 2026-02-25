@@ -31,10 +31,3 @@ Java 21 + Spring Boot + PostgreSQL.
 2. Run schema: `psql -U your_user -d s1c4database -f src/main/resources/sql/schema.sql`
 3. Copy `application.properties.example` to `application.properties` and set your DB credentials
 4. Run `./gradlew bootRun`
-
-## Ports
-
-- Backend: 8000
-- PostgreSQL: 5432
-
-**Note:** If PostgreSQL is already running on your machine, stop it first or change the port in `docker-compose.yml` (e.g. `"5433:5432"`).
