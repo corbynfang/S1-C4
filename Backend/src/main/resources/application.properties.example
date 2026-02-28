@@ -6,13 +6,10 @@ spring.application.name=S1-C4Database-Backend
 
 # PostgreSQL - Docker defaults (postgres/postgres, port 5432)
 spring.datasource.url=jdbc:postgresql://localhost:5432/s1c4database
-spring.datasource.username=corbynl
-spring.datasource.password=UNT123
+spring.datasource.username=postgres
+spring.datasource.password=postgres
 spring.datasource.driver-class-name=org.postgresql.Driver
 
 # JPA / Hibernate
 spring.jpa.hibernate.ddl-auto=none
 spring.jpa.show-sql=false
-
-# Set to true once to load CSV data, then set to false
-app.load-csv=false

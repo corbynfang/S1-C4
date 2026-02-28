@@ -1,33 +1,33 @@
-# S1-C4 Project
+# Backend
 
-Java 21 + Spring Boot + PostgreSQL.
+Java 21 + Spring Boot + PostgreSQL. REST API for price history and trade journal.
 
-## Quick Start (Docker)
+## Run
 
-1. **Start PostgreSQL:**
-   ```bash
-   cd S1-C4
-   docker compose up -d
-   ```
-   Schema runs automatically on first start.
+1. PostgreSQL must be running with database `s1c4database`
+2. Run schema if needed: `psql -U your_user -d s1c4database -f src/main/resources/sql/schema.sql`
+3. Set DB credentials in `src/main/resources/application.properties`
+4. `./gradlew bootRun`
 
-2. **Configure the app:**
-   ```bash
-   cp src/main/resources/application.properties.example src/main/resources/application.properties
-   ```
-   Edit if needed. Docker uses `postgres` / `postgres` by default.
+Server runs on port 8000.
 
-3. **Load CSV data (first time only):**  
-   Set `app.load-csv=true` in `application.properties`, then run. Set back to `false` after.
+## Test the API
 
-4. **Run the backend:**
-   ```bash
-   ./gradlew bootRun
-   ```
+```bash
+# Get symbols
+curl "http://localhost:8000/api/symbols"
 
-## Manual Setup (no Docker)
+# Get prices (replace symbol/dates with values you have)
+curl "http://localhost:8000/api/prices?symbol=AAPL&start=2020-01-01&end=2021-01-01"
 
-1. Install PostgreSQL, create database `s1c4database`
-2. Run schema: `psql -U your_user -d s1c4database -f src/main/resources/sql/schema.sql`
-3. Copy `application.properties.example` to `application.properties` and set your DB credentials
-4. Run `./gradlew bootRun`
+# Get all trades
+curl "http://localhost:8000/api/trades"
+
+# Get trade summary
+curl "http://localhost:8000/api/trades/summary"
+
+# Log a trade
+curl -X POST "http://localhost:8000/api/trades?portfolioValue=100000" \
+  -H "Content-Type: application/json" \
+  -d '{"symbol":"AAPL","tradeType":"BUY","shares":10,"entryPrice":150.50,"tradeDate":"2024-01-15","thesis":"Test","stopLoss":145,"targetPrice":160,"strategyTag":"swing"}'
+```

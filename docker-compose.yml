@@ -1,6 +1,7 @@
 # Run: docker compose up -d
 # Stop: docker compose down
-# Database is ready when the container is running. Schema runs automatically on first start.
+# Schema runs automatically on first start only.
+# To re-run schema (e.g. after adding trade_journal): docker compose down -v && docker compose up -d
 
 services:
   postgres:

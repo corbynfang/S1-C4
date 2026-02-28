@@ -13,6 +13,8 @@ import {
 } from "./services/portfolioService";
 import "./App.css";
 
+const BACKEND_URL = "http://localhost:8000";
+
 function App() {
   // ========================================================================
   // STATE: Portfolio
@@ -20,6 +22,24 @@ function App() {
   // It's similar to a member variable in a C++ class
   // ========================================================================
   const [portfolio, setPortfolio] = useState<Portfolio | null>(null);
+
+  // ========================================================================
+  // STATE: Backend connection (DB -> Backend -> Electron)
+  // Checks if the backend API is reachable (backend connects to PostgreSQL)
+  // ========================================================================
+  const [backendStatus, setBackendStatus] = useState<"checking" | "connected" | "offline">("checking");
+
+  // ========================================================================
+  // EFFECT: Check backend connection on load
+  // Fetches /api/symbols - if OK, backend (and its DB connection) is working
+  // ========================================================================
+  useEffect(() => {
+    fetch(`${BACKEND_URL}/api/symbols`)
+      .then((res) => {
+        setBackendStatus(res.ok ? "connected" : "offline");
+      })
+      .catch(() => setBackendStatus("offline"));
+  }, []);
 
   // ========================================================================
   // EFFECT: Load Portfolio on App Start
@@ -60,6 +80,12 @@ function App() {
       {/* Header */}
       <header style={styles.header}>
         <h1>Stock Trading Tool</h1>
+        <div style={styles.status}>
+          Backend:{" "}
+          {backendStatus === "checking" && "Checking..."}
+          {backendStatus === "connected" && <span style={styles.connected}>Connected (DB ok)</span>}
+          {backendStatus === "offline" && <span style={styles.offline}>Offline – start Backend on port 8000</span>}
+        </div>
       </header>
 
       {/* Main Content */}
@@ -92,6 +118,20 @@ const styles = {
     marginBottom: "30px",
     borderBottom: "2px solid #007bff",
     paddingBottom: "20px",
+  } as React.CSSProperties,
+
+  status: {
+    marginTop: "8px",
+    fontSize: "14px",
+  } as React.CSSProperties,
+
+  connected: {
+    color: "#28a745",
+    fontWeight: "bold",
+  } as React.CSSProperties,
+
+  offline: {
+    color: "#dc3545",
   } as React.CSSProperties,
 
   main: {
