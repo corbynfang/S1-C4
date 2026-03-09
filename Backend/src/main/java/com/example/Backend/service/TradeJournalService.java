@@ -13,6 +13,19 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 // Service for trade journal operations. Handles logging trades, computing discipline scores, detecting violations, and providing trade summaries for behavioral data.
+// WHAT IS CONSIDERED A GOOD TRADE: 
+// - Has written thesis = 20 points
+// - Has stop loss set = 15 points
+// - Has target price set = 15 points
+// - Position size under 20% of portfolio = 20 points
+// - Has strategy tag = 20 points
+// - Holding period at least 1 day = 10 points
+// - Has written thesis = 20 points
+// - Has stop loss set = 15 points
+// - Has target price set = 15 points
+// - Position size under 20% of portfolio = 20 points
+// - Has strategy tag = 20 points
+// - Holding period at least 1 day = 10 points
 
 @Service
 public class TradeJournalService {
