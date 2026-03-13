@@ -150,12 +150,12 @@ public class TradeJournalService {
     }
 
     // Build behavioral stats summary from all trades.
-    // Returns a TradeSummary object with the total trades, average discipline score, win/loss counts, and top violations.
-    // Uses the repository to find all trades and compute the summary.
-    // Returns a TradeSummary object with the total trades, average discipline score, win/loss counts, and top violations.
     public TradeSummary getBehavioralSummary() {
-        List<TradeJournal> trades = repository.findAllByOrderByTradeDateDesc();
+        return buildSummaryFromTrades(repository.findAllByOrderByTradeDateDesc());
+    }
 
+    // Build behavioral stats summary from a given list of trades (e.g. for a specific account).
+    public TradeSummary buildSummaryFromTrades(List<TradeJournal> trades) {
         int total = trades.size();
         if (total == 0) {
             return new TradeSummary(0, BigDecimal.ZERO, 0, 0, List.of());

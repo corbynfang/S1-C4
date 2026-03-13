@@ -20,4 +20,9 @@ public interface TradeJournalRepository extends JpaRepository<TradeJournal, Long
      * Find all trades ordered by trade date descending (newest first).
      */
     List<TradeJournal> findAllByOrderByTradeDateDesc();
+
+    /**
+     * Find all trades for a given account, ordered by trade date descending.
+     */
+    List<TradeJournal> findByAccountIdOrderByTradeDateDesc(Long accountId);
 }

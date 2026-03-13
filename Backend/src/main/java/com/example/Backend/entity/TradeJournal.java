@@ -15,6 +15,9 @@ public class TradeJournal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "account_id")
+    private Long accountId;
+
     @Column(nullable = false, length = 10)
     private String symbol;
 
@@ -71,6 +74,9 @@ public class TradeJournal {
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
+
+    public Long getAccountId() { return accountId; }
+    public void setAccountId(Long accountId) { this.accountId = accountId; }
 
     public String getSymbol() { return symbol; }
     public void setSymbol(String symbol) { this.symbol = symbol; }

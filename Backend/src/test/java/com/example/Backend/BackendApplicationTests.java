@@ -1,6 +1,8 @@
 package com.example.Backend;
 
+import com.example.Backend.entity.Account;
 import com.example.Backend.entity.TradeJournal;
+import com.example.Backend.service.AccountService;
 import com.example.Backend.service.PriceHistoryService;
 import com.example.Backend.service.TradeJournalService;
 import org.junit.jupiter.api.Test;
@@ -19,6 +21,9 @@ class BackendApplicationTests {
 
 	@Autowired
 	private TradeJournalService tradeJournalService;
+
+	@Autowired
+	private AccountService accountService;
 
 	@Test
 	void contextLoads() {
@@ -60,5 +65,28 @@ class BackendApplicationTests {
 		assert saved != null;
 		assert saved.getId() != null;
 		assert saved.getDisciplineScore() != null;
+	}
+
+	@Test
+	void accountCrudWorks() {
+		Account account = new Account();
+		account.setDisplayName("Test Student");
+		account.setEmail("test@example.edu");
+
+		Account saved = accountService.create(account);
+		assert saved != null;
+		assert saved.getId() != null;
+		assert "Test Student".equals(saved.getDisplayName());
+
+		var found = accountService.findById(saved.getId());
+		assert found.isPresent();
+		assert "Test Student".equals(found.get().getDisplayName());
+
+		var trades = accountService.getTradesForAccount(saved.getId());
+		assert trades != null;
+
+		var progress = accountService.getProgressForAccount(saved.getId());
+		assert progress != null;
+		assert progress.getTotalTrades() >= 0;
 	}
 }

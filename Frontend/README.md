@@ -1,4 +1,32 @@
-# React + TypeScript + Vite
+# Frontend — Electron + React + TypeScript + Vite
+
+Stock trading tool UI. Components: CandlestickChart (real backend data), MarketOrder, Portfolio.
+
+## CandlestickChart Component
+
+`src/components/CandlestickChart.tsx` fetches OHLCV data from the backend and renders a candlestick + volume chart using [lightweight-charts](https://tradingview.github.io/lightweight-charts/).
+
+**Concepts used:**
+- `useState` — selected symbol, symbols list, prices, loading, error
+- `useEffect` — fetch `/api/symbols` on mount, fetch `/api/prices` when symbol changes
+- `useRef` — DOM container for the chart, chart/series instances for updates
+- TypeScript `interface OHLCV` — matches backend `PriceHistory` entity
+
+**Backend endpoints:**
+- `GET /api/symbols` → `string[]`
+- `GET /api/prices?symbol=AAPL&start=2020-01-01&end=2021-01-01` → OHLCV array
+
+## Replacing mockData with Real API Calls
+
+`MarketOrder` and `Portfolio` currently use `mockData.ts` for tickers and prices. To use the backend instead:
+
+1. **Symbols:** Replace `getAllTickers()` and `getStockByTicker()` with a fetch to `GET /api/symbols` (plus optional metadata from another endpoint if you add one).
+2. **Current price:** The backend has historical OHLCV, not “current” price. Options: use latest close from `/api/prices`, or add a `GET /api/quote?symbol=X` endpoint.
+3. **Same pattern as CandlestickChart:** `useState` for data, `useEffect` to fetch on mount or when inputs change, handle loading/error.
+
+---
+
+# React + TypeScript + Vite (Template Notes)
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
