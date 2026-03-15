@@ -16,6 +16,7 @@ services:
     volumes:
       # Auto-run schema on first startup
       - ./Backend/src/main/resources/sql/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+      - ./Backend/src/main/resources/sql/schema-accounts.sql:/docker-entrypoint-initdb.d/02-schema-accounts.sql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d s1c4database"]
       interval: 5s

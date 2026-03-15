@@ -1,5 +1,6 @@
 -- Simple SQL script for creating the tables for the datasets we have installed in the database
 
+-- Securities table for tracking stocks, ETFs, and bond ETFs
 CREATE TABLE IF NOT EXISTS securities (
     id BIGSERIAL PRIMARY KEY,
     symbol VARCHAR(10) NOT NULL UNIQUE,

@@ -1,6 +1,7 @@
 package com.example.Backend;
 
 import com.example.Backend.entity.Account;
+import com.example.Backend.entity.RiskTolerance;
 import com.example.Backend.entity.TradeJournal;
 import com.example.Backend.service.AccountService;
 import com.example.Backend.service.PriceHistoryService;
@@ -13,6 +14,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
+
+// Tests for the backend application. Better than using the electron app to test because it tests the database.
 @SpringBootTest
 class BackendApplicationTests {
 
@@ -69,14 +72,13 @@ class BackendApplicationTests {
 
 	@Test
 	void accountCrudWorks() {
-		Account account = new Account();
-		account.setDisplayName("Test Student");
-		account.setEmail("test@example.edu");
-
-		Account saved = accountService.create(account);
+		// Use unique username per run so test is repeatable (accounts.username has UNIQUE constraint)
+		String username = "teststudent-" + System.currentTimeMillis();
+		Account saved = accountService.registerAccount(username, "password123", "Test Student", RiskTolerance.MODERATE);
 		assert saved != null;
 		assert saved.getId() != null;
 		assert "Test Student".equals(saved.getDisplayName());
+		assert username.equals(saved.getUsername());
 
 		var found = accountService.findById(saved.getId());
 		assert found.isPresent();

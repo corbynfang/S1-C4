@@ -14,6 +14,12 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true, nullable = false, length = 50)
+    private String username;
+
+    @Column(name = "password_hash", nullable = false, length = 255)
+    private String passwordHash;
+
     @Column(name = "display_name", nullable = false, length = 100)
     private String displayName;
 
@@ -25,6 +31,10 @@ public class Account {
 
     @Column(name = "created_at", nullable = false)
     private Instant createdAt = Instant.now();
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "risk_tolerance", length = 20)
+    private RiskTolerance riskTolerance;
 
     public Account() {
     }
@@ -43,6 +53,30 @@ public class Account {
 
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
+    }
+
+    public RiskTolerance getRiskTolerance() {
+        return riskTolerance;
+    }
+
+    public void setRiskTolerance(RiskTolerance riskTolerance) {
+        this.riskTolerance = riskTolerance;
     }
 
     public String getEmail() {

@@ -2,9 +2,11 @@ package com.example.Backend.service;
 
 import com.example.Backend.dto.TradeSummary;
 import com.example.Backend.entity.Account;
+import com.example.Backend.entity.RiskTolerance;
 import com.example.Backend.entity.TradeJournal;
 import com.example.Backend.repository.AccountRepository;
 import com.example.Backend.repository.TradeJournalRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,13 +20,16 @@ public class AccountService {
     private final AccountRepository accountRepository;
     private final TradeJournalRepository tradeJournalRepository;
     private final TradeJournalService tradeJournalService;
+    private final PasswordEncoder passwordEncoder;
 
     public AccountService(AccountRepository accountRepository,
                           TradeJournalRepository tradeJournalRepository,
-                          TradeJournalService tradeJournalService) {
+                          TradeJournalService tradeJournalService,
+                          PasswordEncoder passwordEncoder) {
         this.accountRepository = accountRepository;
         this.tradeJournalRepository = tradeJournalRepository;
         this.tradeJournalService = tradeJournalService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<Account> findAll() {
@@ -37,6 +42,30 @@ public class AccountService {
 
     public Account create(Account account) {
         return accountRepository.save(account);
+    }
+
+    // Find an account by username.
+    // Used for authentication.
+    // Returns Optional<Account> because the account may not exist.
+    public Optional<Account> findByUsername(String username) {
+        return accountRepository.findByUsername(username);
+    }
+
+    public Account registerAccount(String username, String password, String displayName, RiskTolerance riskTolerance) {
+        if (accountRepository.findByUsername(username).isPresent()) {
+            throw new IllegalArgumentException("Username already exists: " + username);
+        }
+        Account account = new Account();
+        account.setUsername(username);
+        account.setPasswordHash(passwordEncoder.encode(password));
+        account.setDisplayName(displayName);
+        account.setRiskTolerance(riskTolerance);
+        return accountRepository.save(account);
+    }
+
+    public Optional<Account> authenticateUser(String username, String rawPassword) {
+        return accountRepository.findByUsername(username)
+                .filter(account -> passwordEncoder.matches(rawPassword, account.getPasswordHash()));
     }
 
     public List<TradeJournal> getTradesForAccount(Long accountId) {
